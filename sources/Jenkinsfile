@@ -2,10 +2,15 @@ pipeline {
     agent any
 
     stages {
-        stage('Stage 1') {
+        stage('checkout') {
             steps {
-                 input id: 'test', message: 'Hello', parameters: [string(defaultValue: '', description: '', name: 'myparam')]
-                 sh "echo ${env}"
+checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: '1d80c116-490e-4138-a941-375a1fdb3de8', url: 'https://github.com/Suresh1925/simple-python-pyinstaller-app.git']])
+            }
+        }
+        stage('build'){
+            steps{
+                git credentialsId: '1d80c116-490e-4138-a941-375a1fdb3de8', url: 'https://github.com/Suresh1925/simple-python-pyinstaller-app.git'
+                bat 'python leapYear.py ${1998}'
             }
         }
     }
